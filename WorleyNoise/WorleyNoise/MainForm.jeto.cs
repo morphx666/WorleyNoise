@@ -16,6 +16,7 @@ namespace WorleyNoise {
         private Size surfaceSize;
         private bool isClosing = false;
         private bool hasChanged = false;
+        private bool drawFeatures = true;
 
         private readonly List<(Point Point, Color Color)> pixels = new List<(Point Point, Color Color)>();
         private readonly List<Point3D> features = new List<Point3D>();
@@ -27,6 +28,7 @@ namespace WorleyNoise {
         private int r2;
 
         private Point3D selFeature = null;
+        private bool isDragging;
 
         public enum Scales {
             Linear,
@@ -60,34 +62,44 @@ namespace WorleyNoise {
                                                           p.Point.Y,
                                                           resolution, resolution));
 
-                    features.ForEach((f) => g.FillEllipse(Colors.Red,
-                                                          f.X * resolution + r2 - fr2,
-                                                          f.Y * resolution + r2 - fr2,
-                                                          featureRadius, featureRadius));
+                    if(drawFeatures) features.ForEach((f) => g.FillEllipse(f == selFeature ? Colors.Red : Colors.Blue,
+                                                                           f.X * resolution + r2 - fr2,
+                                                                           f.Y * resolution + r2 - fr2,
+                                                                           featureRadius, featureRadius));
 
                     hasChanged = false;
                 }
             };
 
-            Canvas.MouseMove += (object s, MouseEventArgs e) => {
-                this.Cursor = GetFeatureAtPoint(e.Location.X, e.Location.Y) == null ? Cursors.Default : Cursors.Pointer;
-            };
-
-            Canvas.MouseDown += (object s, MouseEventArgs e) => {
-                selFeature = GetFeatureAtPoint(e.Location.X, e.Location.Y);
+            Canvas.MouseDown += (_, __) => {
+                isDragging = selFeature != null;
             };
 
             Canvas.MouseMove += (object s, MouseEventArgs e) => {
-                if(selFeature != null) {
+                if(isDragging) {
                     selFeature.X = (int)e.Location.X / resolution;
                     selFeature.Y = (int)e.Location.Y / resolution;
                     CreatePixels();
+                } else {
+                    Point3D f = GetFeatureAtPoint(e.Location.X, e.Location.Y);
+                    if(f != selFeature) {
+                        this.Cursor = f == null ? Cursors.Default : Cursors.Pointer;
+                        lock(syncObj) {
+                            selFeature = f;
+                            hasChanged = true;
+                        }
+                    }
                 }
             };
 
             Canvas.MouseUp += (_, __) => {
                 this.Cursor = Cursors.Default;
-                selFeature = null;
+                isDragging = false;
+
+                lock(syncObj) {
+                    selFeature = null;
+                    hasChanged = true;
+                }
             };
         }
 
@@ -156,13 +168,13 @@ namespace WorleyNoise {
 
                     switch(scale) {
                         case Scales.Linear:
-                            a = MapLinear(minDistance, 0, maxDistance);
+                            a = MapLinear(minDistance, 0.0, maxDistance);
                             break;
                         case Scales.Logarithmic:
-                            a = MapLog(minDistance, 0, maxDistance);
+                            a = MapLog(minDistance, -1.0, maxDistance);
                             break;
                         case Scales.Exponential:
-                            a = MapExp(minDistance, 0, maxDistance);
+                            a = MapExp(minDistance, 0.0, maxDistance);
                             break;
                     }
 
@@ -181,8 +193,7 @@ namespace WorleyNoise {
         }
 
         private double MapLog(double v, double min, double max) {
-            v -= min;
-            return v > 0 ? Math.Log10(v) / Math.Log10(max) : min;
+            return v > 0 ? Math.Log10(v - min) / Math.Log10(max) : min;
         }
 
         private double MapExp(double v, double min, double max) {
