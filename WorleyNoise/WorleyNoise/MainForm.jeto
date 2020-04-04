@@ -1,0 +1,16 @@
+﻿{
+	"$type": "Form",
+	"Title": "Worley Noise",
+	"ClientSize": "800, 680",
+	"Padding": "0",
+	"Content": {
+		"$type": "DynamicLayout",
+		"Rows": [
+			{
+				"$type": "Drawable",
+				"$name": "Canvas",
+				"BackgroundColor": "Black"
+			}
+		]
+	}
+}
