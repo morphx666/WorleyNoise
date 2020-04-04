@@ -3,8 +3,8 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
-    <AssemblyVersion>2020.4.95.2</AssemblyVersion>
-    <FileVersion>2020.4.95.2</FileVersion>
+    <AssemblyVersion>2020.4.95.4</AssemblyVersion>
+    <FileVersion>2020.4.95.4</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">

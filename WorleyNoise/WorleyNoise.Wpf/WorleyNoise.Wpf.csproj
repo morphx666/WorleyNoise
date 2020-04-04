@@ -3,8 +3,8 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
-    <AssemblyVersion>2020.4.95.108</AssemblyVersion>
-    <FileVersion>2020.4.95.108</FileVersion>
+    <AssemblyVersion>2020.4.95.128</AssemblyVersion>
+    <FileVersion>2020.4.95.128</FileVersion>
   </PropertyGroup>
   
   <ItemGroup>

@@ -12,7 +12,7 @@ namespace WorleyNoise {
 
         private int resolution = 8;
         private readonly int maxFeatures = 20;
-        private double overflow = 0.2;
+        private double overflow = 0.0;
         private Size surfaceSize;
         private bool isClosing = false;
         private bool hasChanged = false;
@@ -34,7 +34,7 @@ namespace WorleyNoise {
             Exponential
         }
 
-        private Scales scale = Scales.Linear;
+        private Scales scale = Scales.Logarithmic;
 
         public MainForm() {
             JsonReader.Load(this);
@@ -133,7 +133,7 @@ namespace WorleyNoise {
                     f = 4.0;
                     break;
                 case Scales.Logarithmic:
-                    f = 40.0;
+                    f = 2.0;
                     break;
                 case Scales.Exponential:
                     f = 8.0;
@@ -181,7 +181,8 @@ namespace WorleyNoise {
         }
 
         private double MapLog(double v, double min, double max) {
-            return v == 0 ? min : Math.Log10(v) / max;
+            v -= min;
+            return v > 0 ? Math.Log10(v) / Math.Log10(max) : min;
         }
 
         private double MapExp(double v, double min, double max) {
