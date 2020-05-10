@@ -6,9 +6,9 @@
     
     <RuntimeIdentifiers>osx-x64</RuntimeIdentifiers>
     
-    <AssemblyVersion>2020.4.95.4</AssemblyVersion>
+    <AssemblyVersion>2020.4.95.6</AssemblyVersion>
     
-    <FileVersion>2020.4.95.4</FileVersion>
+    <FileVersion>2020.4.95.6</FileVersion>
   </PropertyGroup>
 	
   <ItemGroup>

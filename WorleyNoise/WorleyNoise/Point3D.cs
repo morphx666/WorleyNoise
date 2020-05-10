@@ -6,14 +6,12 @@ namespace WorleyNoise {
         public int Y;
         public int Z;
 
+        public Point3D() : this(0, 0, 0) { }
+
         public Point3D(int x, int y, int z) {
             X = x;
             Y = y;
             Z = z;
-        }
-
-        public Point3D() : this(0, 0, 0) {
-
         }
 
         public double DistanceTo(Point3D p) {
