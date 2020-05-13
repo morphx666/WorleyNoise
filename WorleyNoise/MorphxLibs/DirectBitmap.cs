@@ -1,6 +1,6 @@
 ﻿#if WINFORMS
 using System;
-using System.Drawing.maging;
+using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Threading.Tasks;
