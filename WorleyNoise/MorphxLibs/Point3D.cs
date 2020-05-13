@@ -1,6 +1,6 @@
 using System;
 
-namespace WorleyNoise {
+namespace MorphxLibs {
     public class Point3D {
         public int X;
         public int Y;

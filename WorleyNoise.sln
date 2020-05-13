@@ -3,15 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29926.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorleyNoise", "WorleyNoise\WorleyNoise\WorleyNoise.csproj", "{7016A7B9-4AEF-42CC-A6B5-3573B2B379DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorleyNoise", "WorleyNoise\WorleyNoise\WorleyNoise.csproj", "{7016A7B9-4AEF-42CC-A6B5-3573B2B379DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorleyNoise.Gtk", "WorleyNoise\WorleyNoise.Gtk\WorleyNoise.Gtk.csproj", "{BDA30C69-737D-4D1C-A73C-5186E42ED330}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorleyNoise.Gtk", "WorleyNoise\WorleyNoise.Gtk\WorleyNoise.Gtk.csproj", "{BDA30C69-737D-4D1C-A73C-5186E42ED330}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorleyNoise.Mac", "WorleyNoise\WorleyNoise.Mac\WorleyNoise.Mac.csproj", "{9A62927B-F388-4BD8-829E-654A56F6FCE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorleyNoise.Mac", "WorleyNoise\WorleyNoise.Mac\WorleyNoise.Mac.csproj", "{9A62927B-F388-4BD8-829E-654A56F6FCE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorleyNoise.Wpf", "WorleyNoise\WorleyNoise.Wpf\WorleyNoise.Wpf.csproj", "{919E212F-0B7C-4606-8EA5-F6A21E8EC2CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorleyNoise.Wpf", "WorleyNoise\WorleyNoise.Wpf\WorleyNoise.Wpf.csproj", "{919E212F-0B7C-4606-8EA5-F6A21E8EC2CC}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "MorphxLibs", "WorleyNoise\MorphxLibs\MorphxLibs.shproj", "{F92EE134-8CB3-455A-9160-841004898E8D}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		WorleyNoise\MorphxLibs\MorphxLibs.projitems*{7016a7b9-4aef-42cc-a6b5-3573b2b379df}*SharedItemsImports = 5
+		WorleyNoise\MorphxLibs\MorphxLibs.projitems*{f92ee134-8cb3-455a-9160-841004898e8d}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

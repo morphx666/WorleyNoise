@@ -5,10 +5,20 @@
     <AssemblyVersion>2020.4.95.185</AssemblyVersion>
     <FileVersion>2020.4.95.185</FileVersion>
   </PropertyGroup>
+	
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+	
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
   
   <ItemGroup>
     <PackageReference Include="Eto.Forms" Version="2.5.0" />
     <PackageReference Include="Eto.Serialization.Json" Version="2.5.0" />
   </ItemGroup>
+  
+  <Import Project="..\MorphxLibs\MorphxLibs.projitems" Label="Shared" />
   
 </Project>
