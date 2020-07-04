@@ -6,9 +6,9 @@
     
     <RuntimeIdentifiers>osx-x64</RuntimeIdentifiers>
     
-    <AssemblyVersion>2020.4.95.6</AssemblyVersion>
+    <AssemblyVersion>2020.7.4.7</AssemblyVersion>
     
-    <FileVersion>2020.4.95.6</FileVersion>
+    <FileVersion>2020.7.4.7</FileVersion>
   </PropertyGroup>
 	
   <ItemGroup>
@@ -16,7 +16,7 @@
   </ItemGroup>
 	
   <ItemGroup>
-    <PackageReference Include="Eto.Platform.Mac64" Version="2.5.0" />
+    <PackageReference Include="Eto.Platform.Mac64" Version="2.5.2" />
   </ItemGroup>
 	
 </Project>

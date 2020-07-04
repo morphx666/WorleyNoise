@@ -16,6 +16,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)HLSRGB.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PerlinNoise.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Point3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Timer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Vector.cs" />
   </ItemGroup>
 </Project>

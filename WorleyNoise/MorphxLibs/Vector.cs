@@ -32,10 +32,22 @@ namespace MorphxLibs {
             return !(p1 == p2);
         }
 
+        public static PointD operator +(PointD p1, PointD p2) {
+            return new PointD(p2.X + p1.X, p2.Y + p1.Y);
+        }
+
+        public static PointD operator -(PointD p1, PointD p2) {
+            return new PointD(p2.X - p1.X, p2.Y - p1.Y);
+        }
+
         public static implicit operator PointD(Point p) => new PointD(p.X, p.Y);
         public static implicit operator PointD(PointF p) => new PointD(p.X, p.Y);
         public static implicit operator Point(PointD p) => new Point((int)p.X, (int)p.Y);
         public static implicit operator PointF(PointD p) => new PointF((float)p.X, (float)p.Y);
+
+        public override string ToString() {
+            return $"({X:F2}, {Y:F2})";
+        }
     }
 
     public class Vector {
@@ -67,6 +79,9 @@ namespace MorphxLibs {
             Reset(0, 0, x, y);
         }
 
+        public Vector(PointD p) : this(p.X, p.Y) {
+        }
+
         public Vector(double magnitude, double angle, PointD origin) {
             mMagnitude = magnitude;
             Angle = angle;
@@ -88,17 +103,25 @@ namespace MorphxLibs {
         public Vector(double magnitude, double angle, double x, double y) : this(magnitude, angle, new PointD(x, y)) {
         }
 
+        public Vector(Point origin, Point destination) {
+            Reset(origin.X, origin.Y, destination.X, destination.Y);
+        }
+
         public double Magnitude {
-            get { return mMagnitude; }
+            get => mMagnitude;
             set { mMagnitude = value; }
         }
 
         public double Angle {
-            get { return mAngle; }
+            get => mAngle;
             set {
                 if(value != mAngle) {
-                    if(value < 0) value += Constants.PI360;
                     mAngle = value % Constants.PI360;
+
+                    //if(mAngle < 0) {
+                    //    mAngle += Constants.PI360;
+                    //    mMagnitude *= -1;
+                    //}
 
                     angleCos = Math.Cos(mAngle);
                     angleSin = Math.Sin(mAngle);
@@ -106,50 +129,62 @@ namespace MorphxLibs {
             }
         }
 
-        public double AngleCos { get { return angleCos; } }
-        public double AngleSin { get { return angleSin; } }
+        public double AngleCos { get => angleCos; }
+        public double AngleSin { get => angleSin; }
 
         public PointD Origin {
-            get { return mOrigin; }
+            get => mOrigin;
             set {
                 if(mOrigin != value) {
                     mOrigin = value;
-                    OnChanged();
+                    //OnChanged();
                 }
             }
         }
 
         public PointD Destination {
-            get { return new PointD(X2, Y2); }
+            get => new PointD(X2, Y2);
             set { Reset(mOrigin.X, mOrigin.Y, value.X, value.Y); }
         }
 
         public double X1 {
-            get { return mOrigin.X; }
+            get => mOrigin.X;
             set { Reset(value, mOrigin.Y, X2, Y2); }
         }
 
         public double Y1 {
-            get { return mOrigin.Y; }
+            get => mOrigin.Y;
             set { Reset(mOrigin.X, value, X2, Y2); }
         }
 
         public double X2 {
-            get { return mOrigin.X + mMagnitude * angleCos; }
+            get => mOrigin.X + mMagnitude * angleCos;
             set { Reset(mOrigin.X, mOrigin.Y, value, Y2); }
         }
 
         public double Y2 {
-            get { return mOrigin.Y + mMagnitude * angleSin; }
+            get => mOrigin.Y + mMagnitude * angleSin;
             set { Reset(mOrigin.X, mOrigin.Y, X2, value); }
         }
 
+        public double Dx {
+            get => X2 - X1;
+        }
+
+        public double Dy {
+            get => Y2 - Y1;
+        }
+
+        public PointD DxDy {
+            get => new PointD(Dx, Dy);
+        }
+
         public double Slope {
-            get { return (Y2 - Y1) / (X2 - X1); }
+            get => (Y2 - Y1) / (X2 - X1);
         }
 
         public Color Color {
-            get { return mColor; }
+            get => mColor;
             set { mColor = value; }
         }
 
@@ -171,13 +206,19 @@ namespace MorphxLibs {
             Destination = new PointD(dp.X + x, dp.Y + y);
         }
 
+        public void Translate(Vector v) {
+            this.Translate(v.X1, v.Y1);
+        }
+
         public void TranslateAbs(double x, double y) {
             double dx = x - mOrigin.X;
             double dy = y - mOrigin.Y;
             PointD dp = Destination;
+            double a = Angle;
 
             mOrigin = new PointD(x, y);
             Destination = new PointD(dp.X + dx, dp.Y + dy);
+            Angle = a;
         }
 
         public void TranslateAbs(Vector v) {
@@ -232,6 +273,12 @@ namespace MorphxLibs {
             Angle = v.Angle;
         }
 
+        public static Vector FromOrigin(double x, double y) {
+            Vector v = Vector.FromPoints(x, y, x, y);
+            v.Magnitude = 1;
+            return v;
+        }
+
         public static Vector FromPoints(double px1, double py1, double px2, double py2) {
             Vector v = new Vector();
             double dx = px2 - px1;
@@ -278,8 +325,7 @@ namespace MorphxLibs {
         }
 
         public static Vector operator -(Vector v1, Vector v2) {
-            Vector v3 = new Vector(v2) { Origin = v1.Origin };
-            return new Vector(v3.Destination, v1.Destination);
+            return new Vector(PointD.Empty, v2.Destination - v1.Destination);
         }
 
         public static Vector operator *(Vector v1, double s) {
@@ -290,8 +336,45 @@ namespace MorphxLibs {
             return v1 * s;
         }
 
+        public static Vector operator *(Vector v1, Vector v2) {
+            return Vector.FromPoints(v1.X1 * v2.X1, v1.Y1 * v2.Y1,
+                                     v1.X2 * v2.X2, v1.Y2 * v2.Y2);
+        }
+
         public static Vector operator /(Vector v1, double s) {
             return v1 * (1 / s);
+        }
+
+        public static Vector operator /(Vector v1, Vector v2) {
+            return Vector.FromPoints(v1.X1 / v2.X1, v1.Y1 / v2.Y1,
+                                     v1.X2 / v2.X2, v1.Y2 / v2.Y2);
+        }
+
+        public static Vector Abs(Vector v) {
+            return Vector.FromPoints(Math.Abs(v.X1), Math.Abs(v.Y1),
+                                     Math.Abs(v.X2), Math.Abs(v.Y2));
+        }
+
+        public static Vector Max(Vector v1, Vector v2) {
+            return Vector.FromPoints(Math.Max(v1.X1, v2.X1), Math.Max(v1.Y1, v2.Y1),
+                                     Math.Max(v1.X2, v2.X2), Math.Max(v1.Y2, v2.Y2));
+        }
+
+        public static double Max(Vector v) {
+            double dx = v.X2 - v.X1;
+            double dy = v.Y2 - v.Y1;
+            return dx > dy ? dx : dy;
+        }
+
+        public static Vector Min(Vector v1, Vector v2) {
+            return Vector.FromPoints(Math.Min(v1.X1, v2.X1), Math.Min(v1.Y1, v2.Y1),
+                                     Math.Min(v1.X2, v2.X2), Math.Min(v1.Y2, v2.Y2));
+        }
+
+        public static double Min(Vector v) {
+            double dx = v.X2 - v.X1;
+            double dy = v.Y2 - v.Y1;
+            return dx < dy ? dx : dy;
         }
 
         public static double Pow(Vector v1, double power) {
@@ -331,6 +414,10 @@ namespace MorphxLibs {
 
         public static double Distance(PointD p1, PointD p2) {
             return Distance(p1.X, p1.Y, p2.X, p2.Y);
+        }
+
+        public static double Distance(Vector v1, Vector v2) {
+            return Distance(v1.Origin, v2.Origin);
         }
 
         public virtual void Paint(Graphics g, Color c, float w = 2, double scale = 1.0) {

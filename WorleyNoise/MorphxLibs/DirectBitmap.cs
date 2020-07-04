@@ -4,7 +4,9 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Threading.Tasks;
+#if !ISLIB
 using System.Windows.Forms;
+#endif
 
 namespace MorphxLibs {
     public class DirectBitmap : IDisposable {
@@ -60,7 +62,7 @@ namespace MorphxLibs {
             bmp.UnlockBits(sourceData);
         }
 
-#if WINFORMS
+#if WINFORMS && !ISLIB
         public DirectBitmap(Control ctrl) : this(ctrl.DisplayRectangle.Width, ctrl.DisplayRectangle.Height) {
         }
 #endif

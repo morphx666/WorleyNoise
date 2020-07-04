@@ -3,8 +3,8 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
-    <AssemblyVersion>2020.4.95.177</AssemblyVersion>
-    <FileVersion>2020.4.95.177</FileVersion>
+    <AssemblyVersion>2020.7.4.178</AssemblyVersion>
+    <FileVersion>2020.7.4.178</FileVersion>
   </PropertyGroup>
   
   <ItemGroup>
@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Eto.Platform.Wpf" Version="2.5.0" />
+    <PackageReference Include="Eto.Platform.Wpf" Version="2.5.2" />
   </ItemGroup>
 
 </Project>
